@@ -25,7 +25,7 @@ const ThemeToggle = () => {
     >
       {/* Sliding circle */}
       <span
-        className={`absolute w-6 h-6 r bg-primary transition-transform duration-300 flex items-center justify-center
+        className={`absolute w-6 h-6 bg-primary transition-transform duration-300 flex items-center justify-center
         ${dark ? "translate-x-6" : "translate-x-0"}`}
       >
         {dark ? (
