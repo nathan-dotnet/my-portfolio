@@ -13,7 +13,7 @@ A PLC-based automated retrieval system with 500 slot capacity, built with React 
 - **Dark/Light Mode** - Theme toggle support
 - **3D Model Viewer** - SMD Tower STL model display
 
-📸 Application Screenshots
+##
 
 🛬 Landing Page
 ![Landing Page](/projects/smd-tower/Screenshots/LandingPage.png)
