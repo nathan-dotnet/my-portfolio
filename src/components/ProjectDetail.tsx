@@ -1,62 +1,47 @@
-// src/components/ProjectDetail.tsx
-import { ArrowLeft } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
-import { projects } from "./ProjectsSection";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import { useNavigate, useParams } from "react-router-dom";
+import remarkGfm from "remark-gfm";
+import { projects } from "../data/projects";
 
-const ProjectDetail = () => {
-  const { projectName } = useParams<{ projectName: string }>();
-  const project = projects.find(
-    (p) => p.name === decodeURIComponent(projectName || ""),
-  );
+export default function ProjectDetail() {
+  const { projectName } = useParams();
+  const navigate = useNavigate();
+  const [content, setContent] = useState("");
 
-  if (!project) {
-    return (
-      <div className="p-6">
-        <h1 className="text-xl font-bold">Project not found</h1>
-        <Link
-          to="/"
-          className="text-blue-500 hover:underline mt-4 inline-block"
-        >
-          Go back
-        </Link>
-      </div>
-    );
-  }
+  const project = projects.find((p) => p.slug === projectName);
+
+  useEffect(() => {
+    if (project) {
+      fetch(project.readme)
+        .then((res) => {
+          if (!res.ok) throw new Error("Markdown not found");
+          return res.text();
+        })
+        .then((text) => setContent(text))
+        .catch((err) => console.error(err));
+    }
+  }, [project]);
+
+  if (!project) return <div className="p-10">Project not found</div>;
+
+  if (!content) return <div className="p-10">Loading project...</div>;
 
   return (
-    <div className="min-h-screen p-6 max-w-4xl mx-auto">
+    <div className="max-w-3xl mx-auto py-10 px-4">
       {/* Back Button */}
-      <Link
-        to="/"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-6 text-base text-black hover:underline"
       >
-        <ArrowLeft className="w-4 h-4" />
-        Back to projects
-      </Link>
+        ← Back
+      </button>
 
-      {/* Header */}
-      <h1 className="text-3xl font-bold mb-2">{project.name}</h1>
-      <p className="text-sm text-muted-foreground font-mono mb-6">
-        {project.url}
-      </p>
+      <h1 className="text-3xl font-bold mb-6">{project.name}</h1>
 
-      {/* Description */}
-      <p className="text-base text-foreground leading-relaxed mb-8">
-        {project.fullDesc}
-      </p>
-
-      {/* Images */}
-      <h2 className="text-lg font-semibold mb-4">Screenshots</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {project.images.map((img: string, idx: number) => (
-          <div
-            key={idx}
-            className={`aspect-video rounded-lg ${img} shadow-md`}
-          />
-        ))}
+      <div className="prose prose-neutral dark:prose-invert">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </div>
     </div>
   );
-};
-
-export default ProjectDetail;
+}
