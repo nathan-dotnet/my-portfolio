@@ -1,5 +1,5 @@
 import { Calendar, Mail, MapPin } from "lucide-react";
-import profileImg from "../assets/profile.png";
+import profileImg from "../assets/ihmeds.png";
 import ThemeToggle from "./ThemeToggle";
 
 const HeroSection = () => {
