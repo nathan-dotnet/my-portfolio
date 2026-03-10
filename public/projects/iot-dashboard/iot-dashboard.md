@@ -26,18 +26,18 @@ It is used in smart manufacturing lines covering multiple factory areas includin
 
 ## Technology Stack
 
-| Layer             | Technology                          |
-| ----------------- | ----------------------------------- |
-| Edge Device       | Raspberry Pi 5 (Python 3.x)         |
-| Data Collector    | Custom Python script (not included) |
-| PLC Interface     | Keyence PLC via socket              |
-| Backend Framework | ASP.NET Core MVC (net8.0)           |
-| Language          | C#                                  |
-| ORM/Data Access   | Entity Framework Core / Dapper      |
-| Database          | Microsoft SQL Server                |
-| Frontend          | Razor, Bootstrap, jQuery, Chart.js  |
-| Email             | MailKit                             |
-| IDE               | Visual Studio 2022/2023             |
+| Layer             | Technology                         |
+| ----------------- | ---------------------------------- |
+| Edge Device       | Raspberry Pi 5 (Python 3.x)        |
+| Data Collector    | Custom Python script               |
+| PLC Interface     | Keyence PLC via socket             |
+| Backend Framework | ASP.NET Core MVC (net8.0)          |
+| Language          | C#                                 |
+| ORM/Data Access   | Entity Framework Core / Dapper     |
+| Database          | Microsoft SQL Server               |
+| Frontend          | Razor, Bootstrap, jQuery, Chart.js |
+| Email             | MailKit                            |
+| IDE               | Visual Studio 2022/2023            |
 
 ---
 
@@ -58,8 +58,6 @@ It is used in smart manufacturing lines covering multiple factory areas includin
 - Data/ DbContextParameters and EF Core context definitions.
 - Services/ Background services such as VoltageMailerService.
 - Views/ Razor view templates.
-
-<br/>
 
 ## Getting Started
 
