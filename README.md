@@ -1,73 +1,54 @@
-# React + TypeScript + Vite
+# my-portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site built with React + TypeScript + Vite. Includes a section-based landing page, dark mode, and project detail pages rendered from Markdown files in `public/`.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS + shadcn/ui
+- React Router (`/` + `/project/:projectName`)
+- React Markdown (`react-markdown` + `remark-gfm`)
+- TanStack Query (provider set up in `src/App.tsx`)
 
-## React Compiler
+## Getting started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then open the URL shown in your terminal (usually `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- `npm run dev` - start dev server
+- `npm run build` - typecheck + build for production
+- `npm run preview` - preview the production build locally
+- `npm run lint` - run ESLint
+
+## Editing content
+
+- Hero / contact links: `src/components/HeroSection.tsx`
+- About / experience / tech stack / footer: `src/components/*Section.tsx`
+- Project list + slugs: `src/data/projects.ts`
+
+## Adding a project (Markdown-powered)
+
+1. Add an entry in `src/data/projects.ts`:
+   - `slug` becomes the URL: `/project/<slug>`
+   - `readme` should point to a Markdown file under `public/`, e.g. `/projects/<slug>/<slug>.md`
+2. Create the Markdown file at `public/projects/<slug>/<slug>.md`.
+3. (Optional) Add screenshots under `public/projects/<slug>/Screenshots/` and reference them in Markdown like:
+
+   ```md
+   ![Screenshot](/projects/<slug>/Screenshots/example.png)
+   ```
+
+## Build & deploy
+
+```bash
+npm run build
 ```
+
+Deploy the generated `dist/` folder to any static host (Netlify, Vercel static output, GitHub Pages, etc.).
