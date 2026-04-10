@@ -4,6 +4,7 @@ import ExperienceSection from "@/components/ExperienceSection";
 import FooterSection from "@/components/FooterSection";
 import HeroSection from "@/components/HeroSection";
 import ProjectsSection from "@/components/ProjectsSection";
+import SocialLinks from "@/components/SocialLinks";
 import TechStackSection from "@/components/TechStackSection";
 import type { ReactNode } from "react";
 
@@ -56,6 +57,10 @@ export default function Home() {
 
             <Card>
               <ProjectsSection />
+            </Card>
+
+            <Card>
+              <SocialLinks />
             </Card>
           </div>
         </div>

@@ -3,7 +3,7 @@ export interface Project {
   slug: string;
   desc: string;
   url: string;
-  readme: string;
+  readme?: string;
 }
 
 export const projects: Project[] = [
@@ -20,5 +20,11 @@ export const projects: Project[] = [
     desc: "Master Dashboard",
     url: "published locally",
     readme: "projects/iot-dashboard/iot-dashboard.md",
+  },
+  {
+    name: "BudgetElly",
+    slug: "budgetelly",
+    desc: "Personal Finance Management App",
+    url: "https://nathan-dotnet.github.io/budgetElly/",
   },
 ];

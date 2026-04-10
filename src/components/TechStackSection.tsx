@@ -7,7 +7,13 @@ const techStack = {
     "Next.js",
     "Tailwind CSS",
   ],
-  Backend: ["ASP.NET Core", "Node.js", "Python", "PHP", "MS SQL Server"],
+  Backend: [
+    "ASP.NET Core MVC",
+    "ASP.NET Core Web API",
+    "C#",
+    "Node.js",
+    "Python",
+  ],
 };
 
 const Tag = ({ children }: { children: string }) => (
@@ -24,11 +30,21 @@ const Tag = ({ children }: { children: string }) => (
   </span>
 );
 
+import Link from "next/link";
+
 const TechStackSection = () => {
   return (
     <section className="">
-      <h2 className="text-xl font-bold mb-6">Tech Stack</h2>
-      <div className="space-y-5">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-xl font-bold">Tech Stack</h2>
+        <Link
+          href="/techstack"
+          className="text-sm font-medium text-primary transition hover:text-primary/80"
+        >
+          View all →
+        </Link>
+      </div>
+      <div className="space-y-5 mt-6">
         {Object.entries(techStack).map(([category, techs]) => (
           <div key={category}>
             <h3 className="text-sm font-semibold mb-2">{category}</h3>
