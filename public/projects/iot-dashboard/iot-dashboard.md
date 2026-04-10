@@ -153,19 +153,3 @@ Production distribution and performance analysis visualization.
 - Modular controllers and views make it easy to add new lines or metrics
 
 ---
-
-## Contributing
-
-1. Fork the repository.
-2. Create a feature branch (feature/).
-3. Make changes and ensure the application builds.
-4. Submit a pull request with a clear description.
-
----
-
-## License
-
-This project does not contain an explicit license file. First assume that the
-source is proprietary to the organization unless otherwise specified.
-
----

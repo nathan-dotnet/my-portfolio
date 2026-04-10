@@ -241,3 +241,25 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+.markdown-body {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.markdown-body pre,
+.markdown-body code {
+  background-color: #f6f8fa !important; /* light mode code block */
+}
+
+.dark .markdown-body pre,
+.dark .markdown-body code {
+  background-color: #161b22 !important; /* dark mode code block */
+}
+.markdown-body table,
+.markdown-body thead,
+.markdown-body tbody,
+.markdown-body tr,
+.markdown-body th,
+.markdown-body td {
+  background-color: transparent !important;
+}
