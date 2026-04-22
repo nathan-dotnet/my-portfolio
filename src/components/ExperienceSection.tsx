@@ -1,5 +1,5 @@
 const experiences = [
-  { title: "System Developer", company: "Sanyo Denki", year: "2025" },
+  { title: "Full Stack Developer", company: "Sanyo Denki", year: "2025" },
   {
     title: "BS Information Technology",
     company: "President Ramon Magsaysay State University",

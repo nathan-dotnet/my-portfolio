@@ -1,6 +1,6 @@
 import { Calendar, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
-import profileImg from "../assets/ihmeds.png";
+import profileImg from "../assets/nathan.png";
 import ThemeToggle from "./ThemeToggle";
 
 const HeroSection = () => {
@@ -22,7 +22,9 @@ const HeroSection = () => {
           <MapPin className="w-3.5 h-3.5" />
           <span>Zambales, Philippines</span>
         </div>
-        <p className="mt-2 text-muted-foreground text-sm">System Developer</p>
+        <p className="mt-2 text-muted-foreground text-sm">
+          Full Stack Developer
+        </p>
         <div className="flex mr-4 flex-wrap gap-3 mt-4">
           <a
             href="mailto:nathaniellucero03@gmail.com"

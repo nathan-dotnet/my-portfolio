@@ -11,11 +11,11 @@ const FooterSection = () => {
             reach out via email.
           </p>
           <a
-            href="mailto:nathaniellucero03@gmail.com"
+            href="mailto:nathaniellucero.dev@gmail.com"
             className="inline-flex items-center gap-2 mt-3 text-sm font-medium hover:underline"
           >
             <Mail className="h-4 w-4" />
-            nathaniellucero03@gmail.com
+            nathaniellucero.dev@gmail.com
           </a>
         </div>
       </div>
