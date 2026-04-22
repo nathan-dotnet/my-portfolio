@@ -22,7 +22,7 @@ const SocialLinks = () => {
               <Linkedin className="h-5 w-5" />
             </a>
             <a
-              href="https://www.instagram.com/reel/DWkyqXdk8Zu/?igsh=MWh3Y3VibnBhbG01cA=="
+              href="https://www.instagram.com/nathan_dotnet?utm_source=qr&igsh=MzNpd2g0enIxcXgz"
               className="p-2 rounded-lg hover:bg-secondary transition-colors"
               aria-label="Instagram"
             >
