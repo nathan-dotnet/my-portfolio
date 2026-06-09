@@ -14,7 +14,7 @@ YUDOO Web is a manufacturing workstation application with a React/Vite frontend 
 
 ### Dashboard
 
-![Dashboard](/projects/yudoo-web/screenshots/Dashboard.png)
+![Dashboard](/projects/yudoo-web/Screenshots/Dashboard.png)
 
 The main workstation dashboard providing quick access to production monitoring, process instructions, and operational tools.
 
@@ -22,7 +22,7 @@ The main workstation dashboard providing quick access to production monitoring, 
 
 ### Digital Process Instructions
 
-![Digital Process Instructions](/projects/yudoo-web/screenshots/DigitalProcessInstructions.png)
+![Digital Process Instructions](/projects/yudoo-web/Screenshots/DigitalProcessInstructions.png)
 
 Displays workstation-specific process steps, work instructions, and images loaded dynamically based on the selected model and station.
 
@@ -30,7 +30,7 @@ Displays workstation-specific process steps, work instructions, and images loade
 
 ### Daily Log
 
-![Daily Log](/projects/yudoo-web/screenshots/DailyLog.png)
+![Daily Log](/projects/yudoo-web/Screenshots/DailyLog.png)
 
 Allows operators and supervisors to record and review daily production activities and operational notes.
 
@@ -38,7 +38,7 @@ Allows operators and supervisors to record and review daily production activitie
 
 ### Output Monitoring
 
-![Output Monitoring](/projects/yudoo-web/screenshots/OutputMonitoring.png)
+![Output Monitoring](/projects/yudoo-web/Screenshots/OutputMonitoring.png)
 
 Provides real-time production output visibility and monitoring for manufacturing operations.
 
@@ -46,7 +46,7 @@ Provides real-time production output visibility and monitoring for manufacturing
 
 ### User Account Maintenance
 
-![User Account Maintenance](/projects/yudoo-web/screenshots/UserAccountMaintenance.png)
+![User Account Maintenance](/projects/yudoo-web/Screenshots/UserAccountMaintenance.png)
 
 Administrative interface for managing users, permissions, and workstation access.
 
@@ -54,7 +54,7 @@ Administrative interface for managing users, permissions, and workstation access
 
 ### Add Model
 
-![Add Model](/projects/yudoo-web/screenshots/AddModel.png)
+![Add Model](/projects/yudoo-web/Screenshots/AddModel.png)
 
 Manage manufacturing models and maintain production-related master data.
 
@@ -62,7 +62,7 @@ Manage manufacturing models and maintain production-related master data.
 
 ### Add Process
 
-![Add Process](/projects/yudoo-web/screenshots/AddProcess.png)
+![Add Process](/projects/yudoo-web/Screenshots/AddProcess.png)
 
 Create and maintain digital process instructions and workstation workflows.
 
@@ -70,7 +70,7 @@ Create and maintain digital process instructions and workstation workflows.
 
 ### Settings
 
-![Settings](/projects/yudoo-web/screenshots/Settings.png)
+![Settings](/projects/yudoo-web/Screenshots/Settings.png)
 
 System configuration and application settings management.
 
