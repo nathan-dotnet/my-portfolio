@@ -22,9 +22,10 @@ export const projects: Project[] = [
     readme: "projects/iot-dashboard/iot-dashboard.md",
   },
   {
-    name: "BudgetElly",
-    slug: "budgetelly",
-    desc: "Personal Finance Management App",
-    url: "https://nathan-dotnet.github.io/budgetElly/",
+    name: "Yudoo Web",
+    slug: "yudoo-web",
+    desc: "Digital Process Instruction`",
+    url: "published locally",
+    readme: "projects/yudoo-web/yudoo-web.md",
   },
 ];
