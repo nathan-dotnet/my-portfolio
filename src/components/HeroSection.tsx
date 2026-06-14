@@ -1,6 +1,5 @@
-import { Calendar, Mail, MapPin } from "lucide-react";
+import { Download, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
-import profileImg from "../assets/nathan.png";
 import ThemeToggle from "./ThemeToggle";
 
 const HeroSection = () => {
@@ -10,8 +9,10 @@ const HeroSection = () => {
         <ThemeToggle />
       </div>
       <Image
-        src={profileImg}
+        src="/assets/nathan.png"
         alt="Nathaniel Lucero"
+        width={160}
+        height={160}
         className="w-32 h-32 sm:w-40 sm:h-40 object-cover border-2 border-border"
       />
       <div className="flex-1">
@@ -27,7 +28,8 @@ const HeroSection = () => {
         </p>
         <div className="flex mr-4 flex-wrap gap-3 mt-4">
           <a
-            href="mailto:nathaniellucero03@gmail.com"
+            href="/cv.pdf"
+            download
             className="
                       inline-flex items-center gap-2
                       px-4 py-2
@@ -39,8 +41,8 @@ const HeroSection = () => {
                       hover:shadow-[0_6px_14px_rgba(0,0,0,0.08)]
                     "
           >
-            <Calendar className="w-4 h-4" />
-            Schedule a Call
+            <Download className="w-4 h-4" />
+            Download CV
           </a>
           <a
             href="mailto:nathaniellucero03@gmail.com"
