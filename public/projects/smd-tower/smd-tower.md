@@ -76,8 +76,8 @@ The app supports slot registration, retrieval, manual PLC axis control, quick mo
 ### PLC Communication
 
 - Keyence PLC over TCP/IP
-- Default PLC IP: `172.29.7.108` //example only
-- Default PLC Port: `8501` //example only
+- Default PLC IP(example): `172.23.4.567`
+- Default PLC Port(example): `8910`
 - MR/DM device addressing for motion and register values
 
 ## Installation & Setup
