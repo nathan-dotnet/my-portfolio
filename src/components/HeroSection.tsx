@@ -45,7 +45,7 @@ const HeroSection = () => {
             Download CV
           </a>
           <a
-            href="mailto:nathaniellucero03@gmail.com"
+            href="mailto:nathaniellucero.dev@gmail.com"
             className="
                       inline-flex items-center gap-2
                       px-4 py-2
