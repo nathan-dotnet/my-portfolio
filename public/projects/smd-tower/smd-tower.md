@@ -1,183 +1,121 @@
-# SMD Tower - Smart Storage Control Panel
+# SMD Tower — Smart Storage Control Panel
 
-A PLC-driven smart storage system with a 500-slot grid, manual PLC controls, Excel import, and SQL Server sync.
+> A factory-floor inventory system that lets operators register, locate, and retrieve up to 500 SMD reel slots — and drives the storage tower's PLC directly from the web app.
 
 ![Slots](https://img.shields.io/badge/Slots-500-blue)
 ![Database](https://img.shields.io/badge/Database-SQL%20Server-orange)
 ![Backend](https://img.shields.io/badge/Backend-Node.js%2FExpress-green)
 ![Frontend](https://img.shields.io/badge/Frontend-React%2FTypeScript-blue)
 ![PLC](https://img.shields.io/badge/PLC-Keyence-blue)
+![Status](https://img.shields.io/badge/Status-Internal%20Deployment-lightgrey)
 
-## Overview
+## Quick Facts
 
-SMD Tower provides an operational interface for an automated retrieval system. It combines:
+|                |                                                                                                           |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| **My Role**    | Full stack developer — designed and built the frontend, backend API, database schema, and PLC integration |
+| **Deployment** | Internal — runs on the company network, not publicly accessible                                           |
+| **Stack**      | React + TypeScript, Node.js/Express, SQL Server, Keyence PLC (TCP/IP)                                     |
 
-- a React + TypeScript frontend
-- a Node.js + Express backend
-- SQL Server database storage
-- direct TCP communication with a Keyence PLC
+## The Problem
 
-The app supports slot registration, retrieval, manual PLC axis control, quick move sequences, and Excel bulk import.
+Before SMD Tower, reel retrieval was a fully manual process — operators had to physically search through trays to locate items, which was slow and prone to mis-picks. The engineering team built SMD Tower to automate this with a PLC-driven storage and retrieval system, controlled through a single web interface.
 
-## Features
+## What I Built
 
-- **500 Slot Storage Grid** with live status
-- **PLC Integration** through TCP/IP
-- **Manual PLC Control** for Z, X, and R axes
-- **Quick Move Sequence** with X=0 first, then Z/R move, then final X move
-- **Reset + Servo Flow** after move commands
-- **Excel Upload** for batch slot registration
-- **Real-time Sync** every 5 seconds
-- **Activity Logs** for all operations
-- **Theme Toggle** for light/dark mode
-- **Slot Management** for registration, retrieval, and clearing
+SMD Tower is the operational interface for an automated SMD reel storage and retrieval system. It combines a React + TypeScript frontend, a Node.js + Express backend, SQL Server for persistence, and direct TCP communication with a Keyence PLC that physically drives the storage tower.
 
-🛬 Landing Page
-![Landing Page](/projects/smd-tower/Screenshots/LandingPage.png)
-💽 Storage
-![Storage](/projects/smd-tower/Screenshots/Storage.png)
-📋 Item List
-![Item List](/projects/smd-tower/Screenshots/ItemList.png)
-📤 Excel Upload
-![Excel Upload](/projects/smd-tower/Screenshots/ExcelUpload.png)
-✏️ Manual Entry
-![Manual Entry](/projects/smd-tower/Screenshots/ManualList.png)
-🎮 Manual Jug
-![Manual Jug](/projects/smd-tower/Screenshots/ManualJug.png)
-✅ Uploaded Items
-![Uploaded Items](/projects/smd-tower/Screenshots/UploadedList.png)
+The system supports:
+
+- A **500-slot storage grid** with live occupancy status
+- **Manual PLC axis control** (Z, X, R) for direct machine operation
+- A **quick-move sequence** that safely orders axis movement (X to zero first, then Z/R, then final X) to avoid collisions
+- **Excel bulk import** for registering large batches of items at once
+- **Real-time sync** with the PLC every 5 seconds
+- Full **activity logging** of every operation
+
+## Architecture
+
+```
+[Web UI] <--> [Express API] <--> [SQL Server]
+                   |
+           [TCP Socket Client] <--> [Keyence PLC]
+```
+
+The frontend talks to the backend over REST. The backend owns both the database connection and the live PLC socket connection, so the frontend never talks to the PLC directly — this keeps the safety-critical movement logic (the quick-move sequence) in one place, on the server, instead of duplicated across UI code.
 
 ## Tech Stack
 
-### Frontend
+**Frontend:** React 18, TypeScript, Vite, TanStack Query, Tailwind CSS + shadcn/ui, Axios, Sonner, Lucide React
 
-- React 18 + TypeScript
-- Vite
-- TanStack Query
-- Tailwind CSS + shadcn/ui
-- Axios
-- Sonner
-- Lucide React
+**Backend:** Node.js, Express, `mssql` driver, custom TCP socket client for PLC communication, Multer (file uploads), CORS, dotenv
 
-### Backend
+**Database:** SQL Server — core tables: `StorageSlots`, `ActivityLogs`, `ExcelFiles`, `ExcelItems`
 
-- Node.js + Express
-- mssql (SQL Server driver)
-- TCP socket PLC client
-- dotenv
-- CORS
-- Multer
+**Hardware Integration:** Keyence PLC over TCP/IP, using MR (relay) and DM (register) device addressing for motion control
 
-### Database
+## Engineering Highlights
 
-- SQL Server
-- Main tables: `StorageSlots`, `ActivityLogs`, `ExcelFiles`, `ExcelItems`
+- **Designed the quick-move sequence** to physically protect the machine — forcing the X axis to zero before any Z/R movement prevents the arm from colliding with the storage rack.
+- **Built the PLC TCP client from scratch** — a raw socket protocol implementation, not an off-the-shelf SDK.
+- **Excel import pipeline** parses and validates bulk uploads before writing to SQL Server, with per-row error handling so one bad row doesn't fail the whole batch.
 
-### PLC Communication
+## Screenshots
 
-- Keyence PLC over TCP/IP
-- Default PLC IP(example): `172.23.4.567`
-- Default PLC Port(example): `8910`
-- MR/DM device addressing for motion and register values
+🛬 **Landing Page**
+![Landing Page](/projects/smd-tower/Screenshots/LandingPage.png)
 
-## Installation & Setup
+💽 **Storage Grid**
+![Storage](/projects/smd-tower/Screenshots/Storage.png)
 
-### Prerequisites
+📋 **Item List**
+![Item List](/projects/smd-tower/Screenshots/ItemList.png)
 
-- Node.js 18+
-- SQL Server
-- Keyence PLC accessible from the backend host
+📤 **Excel Upload**
+![Excel Upload](/projects/smd-tower/Screenshots/ExcelUpload.png)
 
-### Backend Setup
+✏️ **Manual Entry**
+![Manual Entry](/projects/smd-tower/Screenshots/ManualList.png)
 
-```bash
-cd backend
-npm install
-# Create and configure .env
-npm start
-```
+🎮 **Manual Jog Controls**
+![Manual Jog](/projects/smd-tower/Screenshots/ManualJug.png)
 
-### Frontend Setup
+✅ **Uploaded Items**
+![Uploaded Items](/projects/smd-tower/Screenshots/UploadedList.png)
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Database Setup
-
-1. Create a SQL Server database (e.g. `db_SMDTower`)
-2. Run the migration script:
-
-```bash
-node schemaMigration.js
-```
-
-3. Configure the connection string in `backend/.env`
-
-### PLC Setup
-
-- `PLC_IP=172.29.7.108` //example only
-- `PLC_PORT=8501` //example only
-
-## Usage
-
-### Storage Workflow
-
-1. Upload Excel to register multiple items
-2. Register an item into an empty slot
-3. Retrieve an item from an occupied slot
-4. Use Manual tab for direct PLC axis control
-
-### Manual PLC Controls
-
-- **Z axis**: `MR003` / `MR005` (up fast/slow), `MR002` / `MR004` (down fast/slow)
-- **X axis**: `MR103` / `MR105` (pull fast/slow), `MR104` / `MR102` (push slow/fast)
-- **R axis**: `MR203`, `MR205`, `MR204`, `MR202`
-- **Reset**: `MR304`
-- **Servo**: `MR306`
-- **Move trigger**: `MR1305`
-
-### Quick Move Sequence
-
-The quick move route performs:
-
-1. Move X to `0` while preserving current Z/R
-2. Trigger `MR1305`
-3. Move Z/R to target coordinates with X still at `0`
-4. Trigger `MR1305`
-5. Move X to the final target
-6. Trigger `MR1305`
-7. Run reset `MR304` and servo `MR306`
-
-## API Endpoints
+## API Reference
 
 ### Slots
 
-- `GET /api/slots` - get all slots
-- `GET /api/slots/:slotNumber` - get slot details
-- `PUT /api/slots/:slotNumber` - update slot data
-- `PUT /api/slots/clear/:slotNumber` - clear slot contents
-- `GET /api/slots/empty/first` - first empty slot
+| Method | Endpoint                       | Description         |
+| ------ | ------------------------------ | ------------------- |
+| GET    | `/api/slots`                   | Get all slots       |
+| GET    | `/api/slots/:slotNumber`       | Get slot details    |
+| PUT    | `/api/slots/:slotNumber`       | Update slot data    |
+| PUT    | `/api/slots/clear/:slotNumber` | Clear slot contents |
+| GET    | `/api/slots/empty/first`       | First empty slot    |
 
 ### PLC
 
-- `POST /api/plc/move` - move machine to saved slot coordinates
-- `POST /api/plc/set` - manual MR device write
-- `POST /api/plc/manual` - pulse a PLC device for a duration
-- `GET /api/plc/read/:device` - read a PLC device value
-- `POST /api/slots/:slotNumber/plc-axis-values` - save current PLC axis values to slot
-- `POST /api/slots/:slotNumber/move-axis-values` - move using saved slot axis values
-- `POST /api/slots/:slotNumber/quick-move` - quick move sequence (X=0 first)
+| Method | Endpoint                                  | Description                            |
+| ------ | ----------------------------------------- | -------------------------------------- |
+| POST   | `/api/plc/move`                           | Move machine to saved slot coordinates |
+| POST   | `/api/plc/set`                            | Manual MR device write                 |
+| POST   | `/api/plc/manual`                         | Pulse a PLC device for a duration      |
+| GET    | `/api/plc/read/:device`                   | Read a PLC device value                |
+| POST   | `/api/slots/:slotNumber/plc-axis-values`  | Save current PLC axis values to slot   |
+| POST   | `/api/slots/:slotNumber/move-axis-values` | Move using saved slot axis values      |
+| POST   | `/api/slots/:slotNumber/quick-move`       | Run the quick-move sequence            |
 
 ### Excel
 
-- `POST /api/excel/upload` - upload Excel file
-- `GET /api/excel/files` - list uploaded files
-- `GET /api/excel/files/:fileId/items` - list file items
-- `POST /api/excel/files/:fileId/process` - process file data
-- `DELETE /api/excel/files/:fileId` - delete uploaded file
+| Method | Endpoint                           | Description          |
+| ------ | ---------------------------------- | -------------------- |
+| POST   | `/api/excel/upload`                | Upload Excel file    |
+| GET    | `/api/excel/files`                 | List uploaded files  |
+| GET    | `/api/excel/files/:fileId/items`   | List file items      |
+| POST   | `/api/excel/files/:fileId/process` | Process file data    |
+| DELETE | `/api/excel/files/:fileId`         | Delete uploaded file |
 
 ## Project Structure
 
@@ -191,19 +129,19 @@ SMDTower/
 │   ├── plcManual.js       # CLI helper for manual PLC commands
 │   └── excelService.js    # Excel import logic
 ├── frontend/
-│   ├── src/
-│   │   ├── components/    # Shared React components
-│   │   ├── pages/         # Main page views
-│   │   ├── lib/           # API client and utilities
-│   │   ├── hooks/         # Custom hooks
-│   │   ├── types/         # TypeScript types
-│   │   └── utils/         # Utility functions
-│   └── public/            # Static assets
+│   └── src/
+│       ├── components/    # Shared React components
+│       ├── pages/         # Main page views
+│       ├── lib/           # API client and utilities
+│       ├── hooks/         # Custom hooks
+│       ├── types/         # TypeScript types
+│       └── utils/         # Utility functions
 └── README.md
 ```
 
-## Notes
+## PLC Connection (example values, not real network addresses)
 
-- Keep the PLC connected while using the UI.
-- Manual controls now track toggle state for direct device activation.
-- The quick move route is optimized to move X to zero before Z/R movement.
+```
+PLC_IP=192.168.1.100
+PLC_PORT=8501
+```

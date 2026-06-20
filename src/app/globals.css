@@ -263,3 +263,12 @@
 .markdown-body td {
   background-color: transparent !important;
 }
+.markdown-body pre code,
+.markdown-body code {
+  color: #18181b;
+}
+
+.dark .markdown-body pre code,
+.dark .markdown-body code {
+  color: #f4f4f5;
+}
