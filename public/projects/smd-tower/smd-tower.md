@@ -1,147 +1,272 @@
-# SMD Tower — Smart Storage Control Panel
+# SMD Tower - Automated Storage Management System
 
-> A factory-floor inventory system that lets operators register, locate, and retrieve up to 500 SMD reel slots — and drives the storage tower's PLC directly from the web app.
+An intelligent storage control system with PLC integration, real-time synchronization, and intuitive web interface for managing a 500-slot automated storage tower.
 
-![Slots](https://img.shields.io/badge/Slots-500-blue)
+![Architecture](https://img.shields.io/badge/Architecture-Full%20Stack-blue)
 ![Database](https://img.shields.io/badge/Database-SQL%20Server-orange)
-![Backend](https://img.shields.io/badge/Backend-Node.js%2FExpress-green)
-![Frontend](https://img.shields.io/badge/Frontend-React%2FTypeScript-blue)
-![PLC](https://img.shields.io/badge/PLC-Keyence-blue)
-![Status](https://img.shields.io/badge/Status-Internal%20Deployment-lightgrey)
+![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core-512BD4)
+![Frontend](https://img.shields.io/badge/Frontend-React%2FTypeScript-61DAFB)
+![PLC](https://img.shields.io/badge/PLC-Keyence-FF6600)
 
-## Quick Facts
+## Overview
 
-|                |                                                                                                           |
-| -------------- | --------------------------------------------------------------------------------------------------------- |
-| **My Role**    | Full stack developer — designed and built the frontend, backend API, database schema, and PLC integration |
-| **Deployment** | Internal — runs on the company network, not publicly accessible                                           |
-| **Stack**      | React + TypeScript, Node.js/Express, SQL Server, Keyence PLC (TCP/IP)                                     |
+SMD Tower is a comprehensive storage management system that bridges enterprise web technology with industrial automation. It provides real-time control and monitoring of an automated storage tower through:
 
-## The Problem
+- **React + TypeScript** modern web interface
+- **ASP.NET Core** REST API backend
+- **SQL Server** persistent storage
+- **Keyence PLC** TCP/IP communication for hardware control
 
-Before SMD Tower, reel retrieval was a fully manual process — operators had to physically search through trays to locate items, which was slow and prone to mis-picks. The engineering team built SMD Tower to automate this with a PLC-driven storage and retrieval system, controlled through a single web interface.
+## Key Features
 
-## What I Built
+### Storage Management
+- **500-Slot Storage Grid** with real-time status monitoring
+- **Slot Registration & Retrieval** workflow
+- **Bulk Import** via Excel spreadsheet
+- **Item Tracking** with metadata and history
 
-SMD Tower is the operational interface for an automated SMD reel storage and retrieval system. It combines a React + TypeScript frontend, a Node.js + Express backend, SQL Server for persistence, and direct TCP communication with a Keyence PLC that physically drives the storage tower.
+### PLC Control
+- **Direct TCP/IP Communication** with Keyence PLC
+- **Multi-Axis Control** for Z, X, and R axes
+- **Coordinated Move Sequences** (X=0 → Z/R move → final X position)
+- **Servo Reset & Control Flow** after movements
 
-The system supports:
+### System Operations
+- **Real-time Data Sync** (5-second intervals)
+- **Comprehensive Activity Logs** for auditing
+- **Health Monitoring** and status indicators
+- **Theme Toggle** (Light/Dark mode)
 
-- A **500-slot storage grid** with live occupancy status
-- **Manual PLC axis control** (Z, X, R) for direct machine operation
-- A **quick-move sequence** that safely orders axis movement (X to zero first, then Z/R, then final X) to avoid collisions
-- **Excel bulk import** for registering large batches of items at once
-- **Real-time sync** with the PLC every 5 seconds
-- Full **activity logging** of every operation
-
-## Architecture
-
-```
-[Web UI] <--> [Express API] <--> [SQL Server]
-                   |
-           [TCP Socket Client] <--> [Keyence PLC]
-```
-
-The frontend talks to the backend over REST. The backend owns both the database connection and the live PLC socket connection, so the frontend never talks to the PLC directly — this keeps the safety-critical movement logic (the quick-move sequence) in one place, on the server, instead of duplicated across UI code.
+### Developer Features
+- **RESTful API** with comprehensive endpoints
+- **Type-safe Frontend** with TypeScript
+- **Database Migrations** support
+- **Health Check** endpoints
 
 ## Tech Stack
 
-**Frontend:** React 18, TypeScript, Vite, TanStack Query, Tailwind CSS + shadcn/ui, Axios, Sonner, Lucide React
+### Frontend
+- **React 18** + TypeScript for type-safe UI
+- **Vite** for fast builds and HMR
+- **TanStack Query** for server state management
+- **Tailwind CSS** + **shadcn/ui** for styling
+- **Axios** for HTTP requests
+- **Lucide React** for icons
+- **Sonner** for toast notifications
 
-**Backend:** Node.js, Express, `mssql` driver, custom TCP socket client for PLC communication, Multer (file uploads), CORS, dotenv
+### Backend
+- **.NET 10** with ASP.NET Core
+- **C#** for backend logic
+- **SQL Server** driver for database access
+- **TCP Socket Communication** for PLC integration
+- **CORS** enabled for frontend integration
 
-**Database:** SQL Server — core tables: `StorageSlots`, `ActivityLogs`, `ExcelFiles`, `ExcelItems`
+### Database
+- **SQL Server** database
+- **Schema Migrations** support
+- Core tables: `StorageSlots`, `ActivityLogs`, `ExcelFiles`, `ExcelItems`
 
-**Hardware Integration:** Keyence PLC over TCP/IP, using MR (relay) and DM (register) device addressing for motion control
-
-## Engineering Highlights
-
-- **Designed the quick-move sequence** to physically protect the machine — forcing the X axis to zero before any Z/R movement prevents the arm from colliding with the storage rack.
-- **Built the PLC TCP client from scratch** — a raw socket protocol implementation, not an off-the-shelf SDK.
-- **Excel import pipeline** parses and validates bulk uploads before writing to SQL Server, with per-row error handling so one bad row doesn't fail the whole batch.
-
-## Screenshots
-
-🛬 **Landing Page**
-![Landing Page](/projects/smd-tower/Screenshots/LandingPage.png)
-
-💽 **Storage Grid**
-![Storage](/projects/smd-tower/Screenshots/Storage.png)
-
-📋 **Item List**
-![Item List](/projects/smd-tower/Screenshots/ItemList.png)
-
-📤 **Excel Upload**
-![Excel Upload](/projects/smd-tower/Screenshots/ExcelUpload.png)
-
-✏️ **Manual Entry**
-![Manual Entry](/projects/smd-tower/Screenshots/ManualList.png)
-
-🎮 **Manual Jog Controls**
-![Manual Jog](/projects/smd-tower/Screenshots/ManualJug.png)
-
-✅ **Uploaded Items**
-![Uploaded Items](/projects/smd-tower/Screenshots/UploadedList.png)
-
-## API Reference
-
-### Slots
-
-| Method | Endpoint                       | Description         |
-| ------ | ------------------------------ | ------------------- |
-| GET    | `/api/slots`                   | Get all slots       |
-| GET    | `/api/slots/:slotNumber`       | Get slot details    |
-| PUT    | `/api/slots/:slotNumber`       | Update slot data    |
-| PUT    | `/api/slots/clear/:slotNumber` | Clear slot contents |
-| GET    | `/api/slots/empty/first`       | First empty slot    |
-
-### PLC
-
-| Method | Endpoint                                  | Description                            |
-| ------ | ----------------------------------------- | -------------------------------------- |
-| POST   | `/api/plc/move`                           | Move machine to saved slot coordinates |
-| POST   | `/api/plc/set`                            | Manual MR device write                 |
-| POST   | `/api/plc/manual`                         | Pulse a PLC device for a duration      |
-| GET    | `/api/plc/read/:device`                   | Read a PLC device value                |
-| POST   | `/api/slots/:slotNumber/plc-axis-values`  | Save current PLC axis values to slot   |
-| POST   | `/api/slots/:slotNumber/move-axis-values` | Move using saved slot axis values      |
-| POST   | `/api/slots/:slotNumber/quick-move`       | Run the quick-move sequence            |
-
-### Excel
-
-| Method | Endpoint                           | Description          |
-| ------ | ---------------------------------- | -------------------- |
-| POST   | `/api/excel/upload`                | Upload Excel file    |
-| GET    | `/api/excel/files`                 | List uploaded files  |
-| GET    | `/api/excel/files/:fileId/items`   | List file items      |
-| POST   | `/api/excel/files/:fileId/process` | Process file data    |
-| DELETE | `/api/excel/files/:fileId`         | Delete uploaded file |
+### PLC Communication
+- **Keyence PLC** over TCP/IP protocol
+- **MR/DM Device Addressing** for motion and register values
+- **Configurable IP & Port** via settings
 
 ## Project Structure
 
 ```
 SMDTower/
-├── backend/
-│   ├── server.js          # Main Express server
-│   ├── plc.js             # PLC communication helpers
-│   ├── db.js              # Database connection helper
-│   ├── schemaMigration.js # DB schema setup
-│   ├── plcManual.js       # CLI helper for manual PLC commands
-│   └── excelService.js    # Excel import logic
-├── frontend/
-│   └── src/
-│       ├── components/    # Shared React components
-│       ├── pages/         # Main page views
-│       ├── lib/           # API client and utilities
-│       ├── hooks/         # Custom hooks
-│       ├── types/         # TypeScript types
-│       └── utils/         # Utility functions
+├── frontend/                 # React TypeScript application
+│   ├── src/
+│   │   ├── components/       # React components
+│   │   ├── pages/            # Page components
+│   │   ├── hooks/            # Custom hooks
+│   │   ├── lib/              # Utilities & API client
+│   │   └── types/            # TypeScript definitions
+│   └── package.json
+├── backend/                  # ASP.NET Core API
+│   ├── Controllers/          # API endpoints
+│   ├── Models/               # Data models
+│   ├── Data/                 # Database access
+│   ├── Plc/                  # PLC communication
+│   ├── Excel/                # Excel import service
+│   └── Program.cs            # Application entry point
 └── README.md
 ```
 
-## PLC Connection (example values, not real network addresses)
+## Getting Started
 
+### Prerequisites
+- **.NET SDK 10.0** or later
+- **Node.js 18+** and npm
+- **SQL Server** (local or remote)
+- **Keyence PLC** (accessible from backend host)
+
+### Backend Setup
+
+1. Navigate to backend directory:
+```bash
+cd backend
 ```
-PLC_IP=192.168.1.100
-PLC_PORT=8501
+
+2. Configure database connection in `appsettings.Development.json`:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=SMDTower;Trusted_Connection=true;"
+  }
+}
 ```
+
+3. Configure PLC settings:
+```json
+{
+  "Plc": {
+    "Host": "172.29.7.108",
+    "Port": 8501
+  }
+}
+```
+
+4. Run the application:
+```bash
+dotnet run
+```
+
+The backend API will start on `http://localhost:5000`
+
+### Frontend Setup
+
+1. Navigate to frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure API endpoint in `.env` (if needed):
+```
+VITE_API_URL=http://localhost:5000
+```
+
+4. Start development server:
+```bash
+npm run dev
+```
+
+The frontend will start on `http://localhost:5173`
+
+## API Endpoints
+
+### Slots
+- `GET /api/slots` - Get all storage slots
+- `GET /api/slots/{slotId}` - Get specific slot details
+- `POST /api/slots` - Register new item
+- `PUT /api/slots/{slotId}` - Update slot
+- `DELETE /api/slots/{slotId}` - Clear slot
+
+### PLC Control
+- `POST /api/plc/move` - Execute coordinated move
+- `POST /api/plc/axis-control` - Direct axis control
+- `GET /api/plc/status` - Get PLC status
+
+### Activity
+- `GET /api/logs` - Get activity logs
+- `GET /api/stats` - Get system statistics
+
+### Excel Import
+- `POST /api/excel/upload` - Upload and process Excel file
+- `GET /api/excel/items` - Get imported items
+
+### Health
+- `GET /health` - Health check endpoint
+
+## Database Schema
+
+### StorageSlots
+Tracks individual storage slot status and contents
+
+### ActivityLogs
+Records all system operations and user actions
+
+### ExcelFiles & ExcelItems
+Stores bulk import data and results
+
+## Configuration
+
+### Development vs Production
+- **appsettings.Development.json** - Local development settings
+- **appsettings.json** - Production/default settings
+
+Key configurations:
+- Database connection string
+- PLC host and port
+- CORS policies
+- Logging levels
+
+## Building for Production
+
+### Backend
+```bash
+cd backend
+dotnet publish -c Release -o ./publish
+```
+
+### Frontend
+```bash
+cd frontend
+npm run build
+```
+
+## Troubleshooting
+
+### PLC Connection Issues
+- Verify PLC IP and port in configuration
+- Check network connectivity to PLC
+- Review logs for TCP connection errors
+
+### Database Issues
+- Ensure SQL Server is running
+- Verify connection string and credentials
+- Run migrations if schema is missing
+
+### Frontend Build Issues
+- Clear `node_modules` and reinstall: `npm install`
+- Clear Vite cache: `rm -rf dist`
+
+## Development
+
+### Running Tests
+```bash
+cd backend
+dotnet test
+```
+
+### Code Style
+- Backend: C# .NET conventions
+- Frontend: TypeScript with ESLint
+
+## Usage Workflow
+
+### Storage Operations
+1. **Register Item**: Add an item to an empty slot via the dashboard
+2. **Bulk Import**: Upload Excel file for batch registration
+3. **Retrieve Item**: Locate and retrieve item from storage
+4. **Manual Control**: Direct PLC axis control for maintenance
+
+### PLC Axis Controls
+- **Z Axis**: Vertical movement (up/down)
+- **X Axis**: Horizontal movement (push/pull)
+- **R Axis**: Rotation control
+- **Reset & Servo**: System controls for position reset and servo engagement
+
+## License
+
+MIT
+
+## Support
+
+For issues or questions about the project, please open an issue on GitHub.
+
