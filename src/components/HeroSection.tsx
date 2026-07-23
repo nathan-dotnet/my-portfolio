@@ -28,7 +28,7 @@ const HeroSection = () => {
         </p>
         <div className="flex mr-4 flex-wrap gap-3 mt-4">
           <a
-            href="/nathaniel-lucero-cv.pdf"
+            href="/nathaniel_lucero_cv.docx"
             download
             className="
                       inline-flex items-center gap-2
