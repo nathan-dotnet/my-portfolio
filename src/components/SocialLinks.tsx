@@ -15,7 +15,7 @@ const SocialLinks = () => {
               <Github className="h-5 w-5" />
             </a>
             <a
-              href="https://www.linkedin.com/in/nathaniel-lucero-61b07a2a9/"
+              href="https://www.linkedin.com/in/nathaniel-lucero052903/"
               className="p-2 rounded-lg hover:bg-secondary transition-colors"
               aria-label="LinkedIn"
             >
@@ -27,13 +27,6 @@ const SocialLinks = () => {
               aria-label="Instagram"
             >
               <Instagram className="h-5 w-5" />
-            </a>
-            <a
-              href="https://www.facebook.com/Hokori29"
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook className="h-5 w-5" />
             </a>
           </div>
         </div>
