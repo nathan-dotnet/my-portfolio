@@ -1,272 +1,144 @@
-# SMD Tower - Automated Storage Management System
+# SMD Tower — Automated Storage Management System
 
-An intelligent storage control system with PLC integration, real-time synchronization, and intuitive web interface for managing a 500-slot automated storage tower.
+> A full-stack industrial automation system for controlling and monitoring a 360-slot automated storage tower, integrating a modern web interface with a Keyence PLC for real-time machine control and storage operations.
 
-![Architecture](https://img.shields.io/badge/Architecture-Full%20Stack-blue)
-![Database](https://img.shields.io/badge/Database-SQL%20Server-orange)
-![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core-512BD4)
-![Frontend](https://img.shields.io/badge/Frontend-React%2FTypeScript-61DAFB)
-![PLC](https://img.shields.io/badge/PLC-Keyence-FF6600)
+**React · TypeScript · ASP.NET Core · SQL Server · Keyence PLC · SignalR**
 
-## Overview
+### Overview
 
-SMD Tower is a comprehensive storage management system that bridges enterprise web technology with industrial automation. It provides real-time control and monitoring of an automated storage tower through:
+SMD Tower is an automated storage management system designed to manage reels and materials stored inside a 360-slot storage tower.
 
-- **React + TypeScript** modern web interface
-- **ASP.NET Core** REST API backend
-- **SQL Server** persistent storage
-- **Keyence PLC** TCP/IP communication for hardware control
+The system connects a modern React web application to an ASP.NET Core backend, SQL Server, and a Keyence PLC over TCP/IP. It allows operators to monitor storage slots, register and retrieve materials, control machine positioning, and track system activity through a centralized interface.
 
-## Key Features
+The application also supports multiple connected users while enforcing a single active machine operator. Other users can access the system in **View Only** mode without being able to execute machine-control operations.
 
-### Storage Management
-- **500-Slot Storage Grid** with real-time status monitoring
-- **Slot Registration & Retrieval** workflow
-- **Bulk Import** via Excel spreadsheet
-- **Item Tracking** with metadata and history
+### What I Built
 
-### PLC Control
-- **Direct TCP/IP Communication** with Keyence PLC
-- **Multi-Axis Control** for Z, X, and R axes
-- **Coordinated Move Sequences** (X=0 → Z/R move → final X position)
-- **Servo Reset & Control Flow** after movements
+As the full-stack developer, I developed the web application, backend services, database integration, and PLC communication layer.
 
-### System Operations
-- **Real-time Data Sync** (5-second intervals)
-- **Comprehensive Activity Logs** for auditing
-- **Health Monitoring** and status indicators
-- **Theme Toggle** (Light/Dark mode)
+Key areas I worked on include:
 
-### Developer Features
-- **RESTful API** with comprehensive endpoints
-- **Type-safe Frontend** with TypeScript
-- **Database Migrations** support
-- **Health Check** endpoints
+* 360-slot real-time storage management interface
+* Automated reel registration and retrieval workflows
+* Keyence PLC integration through TCP/IP
+* Machine positioning using PLC angle and height registers
+* Operator barcode authentication
+* Single-operator machine control with View Only access
+* Real-time machine-session synchronization using SignalR
+* Excel-based bulk material import
+* Activity and operation logging
+* Admin and system management features
 
-## Tech Stack
+### System Architecture
 
-### Frontend
-- **React 18** + TypeScript for type-safe UI
-- **Vite** for fast builds and HMR
-- **TanStack Query** for server state management
-- **Tailwind CSS** + **shadcn/ui** for styling
-- **Axios** for HTTP requests
-- **Lucide React** for icons
-- **Sonner** for toast notifications
-
-### Backend
-- **.NET 10** with ASP.NET Core
-- **C#** for backend logic
-- **SQL Server** driver for database access
-- **TCP Socket Communication** for PLC integration
-- **CORS** enabled for frontend integration
-
-### Database
-- **SQL Server** database
-- **Schema Migrations** support
-- Core tables: `StorageSlots`, `ActivityLogs`, `ExcelFiles`, `ExcelItems`
-
-### PLC Communication
-- **Keyence PLC** over TCP/IP protocol
-- **MR/DM Device Addressing** for motion and register values
-- **Configurable IP & Port** via settings
-
-## Project Structure
-
-```
-SMDTower/
-├── frontend/                 # React TypeScript application
-│   ├── src/
-│   │   ├── components/       # React components
-│   │   ├── pages/            # Page components
-│   │   ├── hooks/            # Custom hooks
-│   │   ├── lib/              # Utilities & API client
-│   │   └── types/            # TypeScript definitions
-│   └── package.json
-├── backend/                  # ASP.NET Core API
-│   ├── Controllers/          # API endpoints
-│   ├── Models/               # Data models
-│   ├── Data/                 # Database access
-│   ├── Plc/                  # PLC communication
-│   ├── Excel/                # Excel import service
-│   └── Program.cs            # Application entry point
-└── README.md
+```text
+┌──────────────────────────────┐
+│       React Frontend         │
+│                              │
+│  Storage Management          │
+│  Master Control              │
+│  Auto Mode                   │
+│  Manual Mode                 │
+│  View-Only Mode              │
+└──────────────┬───────────────┘
+               │
+        REST API / SignalR
+               │
+               ▼
+┌──────────────────────────────┐
+│      ASP.NET Core API        │
+│                              │
+│  Controllers / Services      │
+│  Machine Session Service     │
+│  PLC Communication           │
+│  Excel Import                │
+└──────────┬───────────┬───────┘
+           │           │
+           ▼           ▼
+     SQL Server     Keyence PLC
+                     TCP/IP
 ```
 
-## Getting Started
+### Engineering Highlights
 
-### Prerequisites
-- **.NET SDK 10.0** or later
-- **Node.js 18+** and npm
-- **SQL Server** (local or remote)
-- **Keyence PLC** (accessible from backend host)
+**Industrial PLC Integration**
 
-### Backend Setup
+Implemented TCP/IP communication between the ASP.NET Core backend and a Keyence PLC to control machine operations, read PLC states, and handle positioning commands.
 
-1. Navigate to backend directory:
-```bash
-cd backend
-```
+**Automated Storage Workflow**
 
-2. Configure database connection in `appsettings.Development.json`:
-```json
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR_SERVER;Database=SMDTower;Trusted_Connection=true;"
-  }
-}
-```
+Built an automated workflow for registering and retrieving reels. After completing an operation, the system can automatically advance to the next available storage position.
 
-3. Configure PLC settings:
-```json
-{
-  "Plc": {
-    "Host": "172.29.7.108",
-    "Port": 8501
-  }
-}
-```
+**Real-Time Machine Control**
 
-4. Run the application:
-```bash
-dotnet run
-```
+Implemented SignalR-based synchronization so connected users immediately receive machine-session changes without manually refreshing the application.
 
-The backend API will start on `http://localhost:5000`
+**Single-Operator Control**
 
-### Frontend Setup
+Designed a server-side machine-session system that allows only one operator to control the machine at a time. Other connected users are placed in View Only mode, while backend authorization prevents unauthorized machine-control requests.
 
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
+**Positioning Control**
 
-2. Install dependencies:
-```bash
-npm install
-```
+Integrated PLC positioning registers for angle and height control, allowing the application to select and position the storage tower programmatically.
 
-3. Configure API endpoint in `.env` (if needed):
-```
-VITE_API_URL=http://localhost:5000
-```
+**Barcode & Excel Integration**
 
-4. Start development server:
-```bash
-npm run dev
-```
+Implemented barcode-based operator authentication and Excel import functionality for managing storage and material information.
 
-The frontend will start on `http://localhost:5173`
+### Technology Stack
 
-## API Endpoints
+**Frontend**
 
-### Slots
-- `GET /api/slots` - Get all storage slots
-- `GET /api/slots/{slotId}` - Get specific slot details
-- `POST /api/slots` - Register new item
-- `PUT /api/slots/{slotId}` - Update slot
-- `DELETE /api/slots/{slotId}` - Clear slot
+React · TypeScript · Vite · Tailwind CSS · TanStack Query · Axios · SignalR Client
 
-### PLC Control
-- `POST /api/plc/move` - Execute coordinated move
-- `POST /api/plc/axis-control` - Direct axis control
-- `GET /api/plc/status` - Get PLC status
+**Backend**
 
-### Activity
-- `GET /api/logs` - Get activity logs
-- `GET /api/stats` - Get system statistics
+ASP.NET Core · C# · REST API · SignalR · Background Services · TCP/IP
 
-### Excel Import
-- `POST /api/excel/upload` - Upload and process Excel file
-- `GET /api/excel/items` - Get imported items
+**Database**
 
-### Health
-- `GET /health` - Health check endpoint
+Microsoft SQL Server
 
-## Database Schema
+**Industrial Integration**
 
-### StorageSlots
-Tracks individual storage slot status and contents
+Keyence PLC · TCP/IP · MR/DM Device Communication
 
-### ActivityLogs
-Records all system operations and user actions
+### Screenshots
 
-### ExcelFiles & ExcelItems
-Stores bulk import data and results
+**Storage Management**
 
-## Configuration
+![Landing Page](/projects/smd-tower/Screenshots/landing-page.png)
 
-### Development vs Production
-- **appsettings.Development.json** - Local development settings
-- **appsettings.json** - Production/default settings
+Main interface for monitoring and managing the automated storage tower.
 
-Key configurations:
-- Database connection string
-- PLC host and port
-- CORS policies
-- Logging levels
+**Master Control**
 
-## Building for Production
+![Master Control](/projects/smd-tower/Screenshots/master-control.png)
 
-### Backend
-```bash
-cd backend
-dotnet publish -c Release -o ./publish
-```
+Operator control interface for accessing machine operations.
 
-### Frontend
-```bash
-cd frontend
-npm run build
-```
+**Auto Mode**
 
-## Troubleshooting
+![Auto Mode](/projects/smd-tower/Screenshots/auto-mode.png)
 
-### PLC Connection Issues
-- Verify PLC IP and port in configuration
-- Check network connectivity to PLC
-- Review logs for TCP connection errors
+Automated storage workflow for registering and retrieving materials.
 
-### Database Issues
-- Ensure SQL Server is running
-- Verify connection string and credentials
-- Run migrations if schema is missing
+**Manual Mode**
 
-### Frontend Build Issues
-- Clear `node_modules` and reinstall: `npm install`
-- Clear Vite cache: `rm -rf dist`
+![Manual Mode](/projects/smd-tower/Screenshots/manual-mode.png)
 
-## Development
+Manual machine controls used for operational and maintenance activities.
 
-### Running Tests
-```bash
-cd backend
-dotnet test
-```
+**Admin Panel**
 
-### Code Style
-- Backend: C# .NET conventions
-- Frontend: TypeScript with ESLint
+![Admin Panel](/projects/smd-tower/Screenshots/admin-panel.png)
 
-## Usage Workflow
+Administrative interface for managing system data and configuration.
 
-### Storage Operations
-1. **Register Item**: Add an item to an empty slot via the dashboard
-2. **Bulk Import**: Upload Excel file for batch registration
-3. **Retrieve Item**: Locate and retrieve item from storage
-4. **Manual Control**: Direct PLC axis control for maintenance
+### Project Impact
 
-### PLC Axis Controls
-- **Z Axis**: Vertical movement (up/down)
-- **X Axis**: Horizontal movement (push/pull)
-- **R Axis**: Rotation control
-- **Reset & Servo**: System controls for position reset and servo engagement
+SMD Tower brings storage management, machine control, and material tracking into a single web-based system, reducing reliance on manual storage operations while providing operators and engineers with centralized visibility of the automated storage equipment.
 
-## License
+**Project Type:** Industrial Automation / Full-Stack Web Application
 
-MIT
-
-## Support
-
-For issues or questions about the project, please open an issue on GitHub.
-
+**Deployment:** Internal manufacturing environment

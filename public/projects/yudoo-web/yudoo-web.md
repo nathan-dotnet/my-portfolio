@@ -1,94 +1,160 @@
 # YUDOO Web — Digital Process Instruction System
 
-> A manufacturing workstation platform that replaces paper work instructions with live, station-specific digital guides — plus real-time PLC-driven status updates on the shop floor.
+> A full-stack manufacturing workstation platform that replaces paper-based work instructions with digital, model-specific process guides and real-time PLC-driven production updates.
 
-![Frontend](https://img.shields.io/badge/Frontend-React%2019%2FVite-blue)
-![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core%20.NET%2010-512BD4)
-![Realtime](https://img.shields.io/badge/Realtime-SignalR-orange)
-![Status](https://img.shields.io/badge/Status-Internal%20Deployment-lightgrey)
+**React · TypeScript · ASP.NET Core · SQL Server · SignalR · PLC**
 
-## Quick Facts
+### Overview
 
-|                |                                                                                                                     |
-| -------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **My Role**    | Full stack developer — built the React frontend and the ASP.NET Core backend, including the SignalR real-time layer |
-| **Deployment** | Internal — runs on the company network, not publicly accessible                                                     |
-| **Stack**      | React 19 + TypeScript + Vite, ASP.NET Core (.NET 10), Entity Framework Core, SQL Server, SignalR                    |
+YUDOO Web is a digital manufacturing workstation system designed to provide operators with centralized process instructions, production records, and real-time workstation status.
 
-## The Problem
+The system replaces traditional paper-based work instructions with digital instructions that can be dynamically loaded based on the selected manufacturing model and workstation.
 
-Before YUDOO Web, the part-by-part build process for UPS units relied on paper-based instructions — any change to a model's build sequence meant manually reprinting and redistributing sheets to every station, with no live visibility into machine status without checking the floor directly.
+It also connects the web application to PLC-driven equipment, allowing production status and machine events to be delivered to connected workstations in real time.
 
-## What I Built
+### What I Built
 
-YUDOO Web is a manufacturing workstation application supporting digital process instructions, daily logs, output monitoring, model and user maintenance, and live PLC-driven station updates pushed over SignalR.
+As the full-stack developer, I developed the React frontend, ASP.NET Core backend, database integration, and real-time communication layer.
 
-## Architecture
+Key areas I worked on include:
 
+* Digital process instruction management
+* Model- and station-specific work instructions
+* Real-time PLC status updates
+* Production output monitoring
+* Daily production logs
+* Manufacturing model management
+* Process instruction management
+* User and workstation management
+* Application settings and configuration
+* Real-time communication using SignalR
+
+### System Architecture
+
+```text id="w8qv2n"
+┌──────────────────────────────┐
+│        PLC / Equipment       │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│     PLC Polling Service      │
+│                              │
+│      PLC State Cache         │
+└──────────────┬───────────────┘
+               │
+               │ SignalR
+               ▼
+┌──────────────────────────────┐
+│       React Frontend         │
+│                              │
+│  Dashboard                   │
+│  Process Instructions        │
+│  Daily Log                   │
+│  Output Monitoring           │
+│  Administration              │
+└──────────────┬───────────────┘
+               │
+               │ REST API
+               ▼
+┌──────────────────────────────┐
+│      ASP.NET Core API        │
+│                              │
+│  Business Logic              │
+│  Controllers / Services      │
+│  PLC Services                │
+└──────────────┬───────────────┘
+               │
+               ▼
+        ┌─────────────┐
+        │ SQL Server  │
+        └─────────────┘
 ```
-[PLC] -> [PlcPollingService] -> [PlcStateCache] -> [SignalR Hub (/plchub)]
-                                                            |
-                                                [React frontend - live updates]
 
-[React frontend] <--REST--> [ASP.NET Core API] <--EF Core--> [SQL Server]
-```
-
-A background `PlcPollingService` continuously reads PLC state and caches it in `PlcStateCache`. Changes are pushed to connected clients in real time through a SignalR hub, so operators see station status update live without refreshing the page — while standard CRUD operations (logs, models, users) go through a conventional REST API.
-
-## Tech Stack
-
-**Frontend:** React 19, TypeScript, Vite 8, React Router, Tailwind CSS
-
-**Backend:** ASP.NET Core (.NET 10), Entity Framework Core, SQL Server, SignalR
-
-**Integrations:** PLC polling service, workstation image sharing over the network
-
-## Engineering Highlights
-
-- **Built a real-time layer with SignalR** so station status reflects live PLC state instead of requiring manual refresh or client-side polling.
-- **Model-aware process instruction lookup** — work instructions and images are resolved dynamically based on the selected model and station, rather than hardcoded per line.
-- **Background polling service architecture** (`PlcService`, `PlcStateCache`, `PickToLightService`) decouples PLC communication from request/response handling, keeping the API responsive while continuously polling hardware.
-
-## Screenshots
-
-**Dashboard**
-![Dashboard](/projects/yudoo-web/Screenshots/Dashboard.png)
-The main workstation dashboard providing quick access to production monitoring, process instructions, and operational tools.
+### Engineering Highlights
 
 **Digital Process Instructions**
+
+Built a system for creating and maintaining digital manufacturing instructions, allowing operators to access the correct process steps and images based on the selected model and workstation.
+
+**Real-Time PLC Integration**
+
+Implemented a background PLC polling architecture that continuously retrieves equipment state without blocking normal API requests.
+
+PLC state is maintained by the backend and distributed to connected clients through SignalR.
+
+**Real-Time Communication**
+
+Implemented SignalR to push workstation and machine updates directly to the frontend, allowing operators to see status changes without manually refreshing the application.
+
+**Model-Aware Instructions**
+
+Designed the process instruction system so that manufacturing content can be associated with specific models and stations rather than being hardcoded into individual pages.
+
+**Production Monitoring**
+
+Built dashboards for monitoring production output and workstation activity, giving operators and supervisors a centralized view of manufacturing progress.
+
+**Manufacturing Administration**
+
+Developed management interfaces for users, models, process instructions, workstations, and application settings.
+
+### Technology Stack
+
+**Frontend**
+
+React · TypeScript · Vite · React Router · Tailwind CSS · SignalR Client
+
+**Backend**
+
+ASP.NET Core · C# · REST API · Entity Framework Core · SignalR · Background Services
+
+**Database**
+
+Microsoft SQL Server
+
+**Industrial Integration**
+
+PLC communication · Background PLC polling · Real-time workstation status
+
+### Screenshots
+
+**Dashboard**
+
+![Dashboard](/projects/yudoo-web/Screenshots/Dashboard.png)
+
+Central workstation dashboard providing access to production monitoring and manufacturing functions.
+
+**Digital Process Instructions**
+
 ![Digital Process Instructions](/projects/yudoo-web/Screenshots/DigitalProcessInstructions.png)
-Station-specific process steps and images, loaded dynamically based on the selected model and station.
+
+Digital manufacturing instructions with model- and station-specific process steps and images.
 
 **Daily Log**
+
 ![Daily Log](/projects/yudoo-web/Screenshots/DailyLog.png)
-Lets operators and supervisors record and review daily production activity.
+
+Interface for recording and reviewing daily manufacturing activity.
 
 **Output Monitoring**
+
 ![Output Monitoring](/projects/yudoo-web/Screenshots/OutputMonitoring.png)
-Real-time production output visibility.
+
+Production output monitoring for workstation and manufacturing activity.
 
 **User Account Maintenance**
+
 ![User Account Maintenance](/projects/yudoo-web/Screenshots/UserAccountMaintenance.png)
-Admin interface for managing users, permissions, and workstation access.
 
-**Add Model**
-![Add Model](/projects/yudoo-web/Screenshots/AddModel.png)
-Manage manufacturing models and master data.
+Administrative interface for managing users and workstation access.
 
-**Add Process**
-![Add Process](/projects/yudoo-web/Screenshots/AddProcess.png)
-Create and maintain digital process instructions.
+### Project Impact
 
-**Settings**
-![Settings](/projects/yudoo-web/Screenshots/Settings.png)
-System configuration and application settings.
+YUDOO Web transforms paper-based manufacturing instructions into a centralized digital workstation platform while connecting production software with real-time machine information.
 
-## Application Areas
+The system provides operators with the correct process information at their workstation while giving supervisors and engineers better visibility into production activity and machine status.
 
-**Frontend routes:** `/login` · `/dashboard` · `/digital-process-instruction` · `/add-new-process` · `/history` · `/dailylog` · `/user-account-maintenance` · `/output-monitoring` · `/settings`
+**Project Type:** Manufacturing / Full-Stack Web Application / Industrial IoT
 
-**Backend modules:** User, model, DPI, daily log, output monitoring, station, and settings controllers; repository/service layers; `PlcService`, `PlcStateCache`, `PickToLightService`; `PlcHub` for real-time updates
-
-## Known Limitations & Next Steps
-
-- Some frontend calls are currently hardcoded to a local backend address rather than using relative paths. Planned cleanup: route everything through a single configurable API base URL (or a Vite proxy) so environment changes don't require code edits.
+**Deployment:** Internal manufacturing environment

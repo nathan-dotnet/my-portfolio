@@ -1,111 +1,193 @@
 # IoT Engineering Dashboard — Real-Time Factory Monitoring
 
-> A full-stack monitoring system that gives engineers live visibility into PLC-connected machinery across seven production lines — replacing manual floor checks with real-time dashboards and automated alerts.
+> A full-stack industrial monitoring platform that collects PLC and machine data through Raspberry Pi edge devices and provides engineers with centralized real-time production, machine, and power monitoring across multiple production areas.
 
-![Backend](https://img.shields.io/badge/Backend-ASP.NET%20Core%20MVC-512BD4)
-![Database](https://img.shields.io/badge/Database-SQL%20Server-orange)
-![Edge](https://img.shields.io/badge/Edge-Raspberry%20Pi%205-red)
-![PLC](https://img.shields.io/badge/PLC-Keyence-blue)
-![Status](https://img.shields.io/badge/Status-Internal%20Deployment-lightgrey)
+**ASP.NET Core · C# · SQL Server · Raspberry Pi · Python · Keyence PLC · Chart.js**
 
-## Quick Facts
+### Overview
 
-|                |                                                                                                           |
-| -------------- | --------------------------------------------------------------------------------------------------------- |
-| **My Role**    | Full stack developer — built the ASP.NET Core backend, dashboards, and Raspberry Pi data collection layer |
-| **Deployment** | Internal — runs on the company network, not publicly accessible                                           |
-| **Stack**      | Raspberry Pi 5 (Python), ASP.NET Core 8 MVC (C#), SQL Server, Razor/Bootstrap/Chart.js                    |
+The IoT Engineering Dashboard is a factory monitoring platform designed to give engineers centralized visibility into machine status, production data, errors, and power consumption across multiple production areas.
 
-## The Problem
+The system connects Keyence PLCs to Raspberry Pi edge devices, where machine data is collected and stored in a central SQL Server database. An ASP.NET Core MVC application then processes and visualizes the data through interactive dashboards and historical reports.
 
-Before this dashboard existed, engineers had no centralized way to see machine status or power data across the seven production lines — checking on a line meant physically walking the floor, and issues were often caught late, after they'd already affected output.
+The platform covers seven production areas as well as power monitoring.
 
-## What I Built
+### What I Built
 
-A comprehensive dashboard system for monitoring Keyence PLC-connected industrial machinery in real time, covering seven production areas: P1FA Oil Proof, P1SA Winding, P1FA Wire Harness, P1SA Circuit, P1SA Press, P1SA Molding, and Power Monitoring.
+As the full-stack developer, I developed the web application, monitoring dashboards, database integration, and Raspberry Pi data collection components.
 
-## Architecture
+Key areas I worked on include:
 
+* Real-time production and machine monitoring
+* PLC data collection through Raspberry Pi edge devices
+* Centralized SQL Server data storage
+* Production KPI dashboards
+* Error monitoring and logging
+* Historical production analysis
+* Power consumption monitoring
+* Monthly power-consumption trends
+* Power quality analysis
+* Voltage monitoring and summaries
+* Automated email notifications
+* Modular monitoring modules for different production areas
+
+### System Architecture
+
+```text
+┌──────────────────────┐
+│    Keyence PLCs      │
+│                      │
+│ Production Equipment │
+└──────────┬───────────┘
+           │
+        TCP/IP
+           │
+           ▼
+┌──────────────────────┐
+│   Raspberry Pi 5     │
+│                      │
+│ Python Data Collector│
+└──────────┬───────────┘
+           │
+           │ Data
+           ▼
+┌──────────────────────┐
+│     SQL Server       │
+│                      │
+│ Production Data      │
+│ Error Logs           │
+│ Power Data           │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│  ASP.NET Core MVC    │
+│                      │
+│ Business Logic       │
+│ Monitoring Modules   │
+│ Background Services  │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│  Engineering         │
+│  Dashboard           │
+│                      │
+│ Charts / KPIs / Logs │
+│ Trends / Reports     │
+└──────────────────────┘
 ```
-[Keyence PLC] --TCP--> [Raspberry Pi 5 / Python collector]
-                                |
-                       [SQL Server (central DB)]
-                                |
-            [ASP.NET Core MVC web app] --> [Razor dashboards / Chart.js]
-                                |
-                    [Email alerts via MailKit]
-```
 
-Edge devices (Raspberry Pi 5 running Python) read sensor and status data directly from the PLCs over a socket protocol and write structured records into SQL Server. The ASP.NET Core MVC app then queries that data, applies business logic, and renders live dashboards, historical reports, and alerts.
+### Engineering Highlights
 
-## Tech Stack
+**Edge Data Collection**
 
-| Layer         | Technology                         |
-| ------------- | ---------------------------------- |
-| Edge Device   | Raspberry Pi 5 (Python 3.x)        |
-| PLC Interface | Keyence PLC via socket             |
-| Backend       | ASP.NET Core MVC (.NET 8), C#      |
-| Data Access   | Entity Framework Core / Dapper     |
-| Database      | Microsoft SQL Server               |
-| Frontend      | Razor, Bootstrap, jQuery, Chart.js |
-| Notifications | MailKit (email alerts)             |
+Built a Raspberry Pi-based data collection layer using Python to communicate with Keyence PLCs and transfer machine information to the central database.
 
-## Engineering Highlights
+**Factory-Wide Monitoring**
 
-- **Designed a multi-stage data pipeline** spanning edge hardware (Raspberry Pi), a central database, and a web layer — handling everything from raw PLC reads to formatted dashboards.
-- **Built error logging and alerting** (e.g. `CircuitErrorLog`, `PressErrorLog`) so engineers get notified automatically instead of discovering issues on a floor walk.
-- **Modular controller/view structure** makes it straightforward to onboard a new production line or metric without touching existing modules.
+Developed a centralized monitoring platform covering multiple production areas, allowing engineers to monitor different machines and processes from a single application.
 
-## Screenshots
+**Production Visualization**
 
-🏠 **Machine List**
-![EIM Machine List](/projects/iot-dashboard/Screenshots/EIMMachineList.png)
+Created interactive dashboards using Razor, Bootstrap, and Chart.js to visualize machine status, production data, KPIs, and historical trends.
 
-📊 **Live KPI Dashboard**
-![P1-O EIM33 Dashboard](/projects/iot-dashboard/Screenshots/P1-O-EIM33Dashboard.png)
+**Power Monitoring**
 
-📈 **Production Histogram**
-![P1-O EIM33 Histogram](/projects/iot-dashboard/Screenshots/P1-O-EIM33Histogram.png)
+Developed power-monitoring functionality for analyzing electricity consumption and electrical measurements through monthly trends, power-quality analysis, and voltage summaries.
 
-🧵 **Wire Harness Monitoring**
+**Automated Error Monitoring**
+
+Implemented error logging and monitoring for individual production areas, allowing engineers to identify machine problems and review historical error activity.
+
+**Automated Notifications**
+
+Implemented background email notification services to alert engineers when configured monitoring conditions or electrical events require attention.
+
+**Modular Architecture**
+
+Organized the application into production-specific modules and controllers, making it easier to add additional machines, production areas, and monitoring metrics without restructuring the entire system.
+
+### Production Areas
+
+The dashboard provides monitoring functionality for:
+
+* P1FA Oil Proof
+* P1SA Winding
+* P1FA Wire Harness
+* P1SA Circuit
+* P1SA Press
+* P1SA Molding
+* Power Monitoring
+
+### Technology Stack
+
+**Edge / Data Collection**
+
+Raspberry Pi 5 · Python · Keyence PLC · TCP/IP
+
+**Backend**
+
+ASP.NET Core MVC · C# · Entity Framework Core · Dapper · Background Services
+
+**Database**
+
+Microsoft SQL Server
+
+**Frontend**
+
+Razor Views · Bootstrap · jQuery · Chart.js
+
+**Notifications**
+
+MailKit · Background Email Service
+
+### Screenshots
+
+**Machine List**
+
+![Machine List](/projects/iot-dashboard/Screenshots/EIMMachineList.png)
+
+Centralized view of monitored machines and production areas.
+
+**Live KPI Dashboard**
+
+![Live KPI Dashboard](/projects/iot-dashboard/Screenshots/P1-O-EIM33Dashboard.png)
+
+Real-time production and machine KPI monitoring.
+
+**Production Histogram**
+
+![Production Histogram](/projects/iot-dashboard/Screenshots/P1-O-EIM33Histogram.png)
+
+Historical production visualization for analyzing machine output.
+
+**Production Monitoring**
+
 ![P1FA Harness](/projects/iot-dashboard/Screenshots/P1FAHarness.png)
 
-🔌 **Circuit Monitoring**
-![P1SA Circuit](/projects/iot-dashboard/Screenshots/P1SACircuit.png)
+Monitoring interface for the P1FA Wire Harness production area.
 
-🏭 **Molding Monitoring**
-![P1SA Molding](/projects/iot-dashboard/Screenshots/P1SAMolding.png)
+**Winding Monitoring**
 
-🏗 **Press Monitoring**
-![P1SA Press](/projects/iot-dashboard/Screenshots/P1SAPress.png)
-
-🧶 **Winding Monitoring**
 ![P1SA Winding](/projects/iot-dashboard/Screenshots/P1SAWinding.png)
 
-⚡ **Power Monitoring — Monthly Trend**
-![Power Monitoring Monthly Trend](/projects/iot-dashboard/Screenshots/PowerMonitoringMT.png)
+Machine and production monitoring for the P1SA Circuit area.
 
-⚡ **Power Monitoring — PQ Analysis**
-![Power Monitoring PQAnalysis](/projects/iot-dashboard/Screenshots/PowerMonitoringPQ.png)
+**Power Monitoring**
 
-⚡ **Power Monitoring — Voltage Summary**
-![Power Monitoring Voltage Summary](/projects/iot-dashboard/Screenshots/PowerMonitoringVS.png)
+![Power Monitoring](/projects/iot-dashboard/Screenshots/PowerMonitoringMT.png)
 
-## Key Features
+![Power Monitoring](/projects/iot-dashboard/Screenshots/PowerMonitoringPQ.png)
 
-- Real-time charts and tables per production area, including power monitoring metrics
-- Historical trend reports
-- Automated error logging with per-line counters
-- Email alerts via a background `VoltageMailerService`
-- Modular controllers/views for easy expansion to new lines or metrics
+Monthly power-consumption trend analysis.
 
-## Project Structure
+### Project Impact
 
-```
-IoTEngineeringDashboard/
-├── Controllers/   # MVC controllers grouped by production area
-├── Models/        # Data models and DTOs
-├── Data/          # EF Core DbContext + connection config
-├── Services/      # Background services (e.g. VoltageMailerService)
-└── Views/         # Razor view templates
-```
+The IoT Engineering Dashboard provides engineers with a centralized view of factory equipment and production data, reducing the need for manual floor checks and making machine conditions, production trends, errors, and power consumption easier to monitor and analyze.
+
+The system combines **industrial PLC communication, edge computing, database systems, backend services, and web-based data visualization** into a single monitoring platform.
+
+**Project Type:** Industrial IoT / Factory Monitoring / Full-Stack Web Application
+
+**Deployment:** Internal manufacturing environment
